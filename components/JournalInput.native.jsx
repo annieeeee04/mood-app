@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
+import { journalInputStyles as styles } from "../styles/journalInput.styles.js";
 
 const MAX_CHARS = 1000;
 
@@ -66,7 +67,6 @@ export default function JournalInput({ note, setNote }) {
         value={note}
         onChangeText={handleChange}
         placeholder="Write about your day, or tap a prompt above to get started..."
-        placeholderTextColor="#777"
         multiline
         textAlignVertical="top"
         style={styles.textarea}
@@ -78,28 +78,3 @@ export default function JournalInput({ note, setNote }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderRadius: 16, padding: 14, gap: 12 },
-  headerRow: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
-  title: { fontSize: 16, fontWeight: "700" },
-  subtitle: { marginTop: 4, opacity: 0.8 },
-  counter: { fontWeight: "700", opacity: 0.8 },
-  counterWarn: { opacity: 1 },
-
-  chipsRow: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  chip: { borderWidth: 1, borderRadius: 999, paddingVertical: 8, paddingHorizontal: 12 },
-  chipPressed: { opacity: 0.7 },
-  chipText: { fontSize: 13 },
-
-  textarea: {
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 12,
-    minHeight: 120,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-
-  footer: { opacity: 0.8, fontSize: 12 },
-});

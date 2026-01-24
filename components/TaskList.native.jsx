@@ -4,9 +4,10 @@ import {
   Text,
   TextInput,
   Pressable,
-  StyleSheet,
   Switch,
 } from "react-native";
+
+import { taskListStyles as styles } from "../styles/taskList.styles.js";
 
 export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
   const [input, setInput] = useState("");
@@ -67,39 +68,3 @@ export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  wrapper: { gap: 12 },
-
-  inputRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  addBtn: { borderWidth: 1, borderRadius: 14, paddingVertical: 10, paddingHorizontal: 14 },
-  addBtnText: { fontWeight: "700" },
-
-  list: { gap: 10 },
-  item: {
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 10,
-  },
-  itemLeft: { flexDirection: "row", alignItems: "center", gap: 10, flex: 1 },
-  taskText: { flex: 1, fontSize: 14 },
-  taskDone: { opacity: 0.6, textDecorationLine: "line-through" },
-
-  delBtn: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10, borderWidth: 1 },
-  delBtnText: { fontWeight: "700" },
-
-  pressed: { opacity: 0.7 },
-  empty: { opacity: 0.8 },
-});

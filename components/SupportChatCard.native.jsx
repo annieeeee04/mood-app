@@ -4,12 +4,12 @@ import {
   Text,
   TextInput,
   Pressable,
-  StyleSheet,
   Switch,
   ScrollView,
   Platform,
 } from "react-native";
 import axios from "axios";
+import { supportChatCardStyles as styles } from "../styles/supportChatCard.styles";
 
 const API_BASE =
   Platform.OS === "android" ? "http://10.0.2.2:4000" : "http://localhost:4000";
@@ -138,42 +138,3 @@ export default function SupportChatCard() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: { borderWidth: 1, borderRadius: 16, padding: 14, gap: 10 },
-  headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  title: { fontSize: 16, fontWeight: "700" },
-  toggleRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  toggleLabel: { fontWeight: "700", opacity: 0.8 },
-  small: { opacity: 0.8 },
-
-  window: {
-    marginTop: 6,
-    borderWidth: 1,
-    borderRadius: 14,
-    padding: 10,
-    maxHeight: 260,
-  },
-
-  bubble: { paddingVertical: 8, paddingHorizontal: 10, borderRadius: 14, marginBottom: 8 },
-  userBubble: { alignSelf: "flex-end", borderWidth: 1 },
-  aiBubble: { alignSelf: "flex-start", borderWidth: 1 },
-  bubbleText: { fontSize: 14, lineHeight: 20 },
-
-  inputRow: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    minHeight: 44,
-    maxHeight: 120,
-  },
-  sendBtn: { borderWidth: 1, borderRadius: 14, paddingVertical: 10, paddingHorizontal: 14 },
-  sendBtnDisabled: { opacity: 0.5 },
-  sendBtnText: { fontWeight: "800" },
-  pressed: { opacity: 0.7 },
-
-  note: { marginTop: 4, opacity: 0.75, fontSize: 12 },
-});

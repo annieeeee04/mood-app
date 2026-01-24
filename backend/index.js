@@ -1,4 +1,12 @@
 // backend/index.js
+export * from "./tokens";
+export * from "./base";
+
+export * from "./moodSelector.styles";
+export * from "./supportChatCard.styles";
+export * from "./taskList.styles";
+export * from "./journalInput.styles";
+
 require("dotenv").config();
 
 const express = require("express");

@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import { View, Pressable, Text } from "react-native";
+import { moodSelectorStyles as styles } from "../styles/moodSelector.styles.js";
 
 export default function MoodSelector({ mood, setMood, onMoodPicked }) {
   const moods = ["😢", "😕", "😐", "😊", "🤩"];
@@ -30,18 +31,3 @@ export default function MoodSelector({ mood, setMood, onMoodPicked }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  row: { flexDirection: "row", gap: 10 },
-  btn: {
-    borderWidth: 1,
-    borderRadius: 14,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btnActive: { borderWidth: 2 },
-  btnPressed: { opacity: 0.7 },
-  emoji: { fontSize: 22 },
-});
