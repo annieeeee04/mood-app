@@ -5,6 +5,8 @@ import ProgressPanel from "../components/ProgressPanel.native";
 import { styles } from "../styles/todayStyles";
 import { useAppSettings } from "../context/AppSettingsContext";
 
+import { SafeAreaView } from "react-native-safe-area-context";
+
 export default function ProgressPage() {
   const { dailyGoal, setDailyGoal } = useAppSettings();
   const params = useLocalSearchParams();
@@ -29,6 +31,7 @@ export default function ProgressPage() {
   const maxForBars = safeGoal;
 
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <ScrollView
       style={styles.screen}
       contentContainerStyle={{ paddingBottom: 24 }}
@@ -48,5 +51,6 @@ export default function ProgressPage() {
         maxForBars={maxForBars}
       />
     </ScrollView>
+    </SafeAreaView>
   );
 }

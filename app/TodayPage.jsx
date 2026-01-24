@@ -18,6 +18,8 @@ import TaskList from "../components/TaskList.native";
 import JournalInput from "../components/JournalInput.native";
 import { useAppSettings } from "../context/AppSettingsContext";
 
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import { API_BASE } from "../config/api";
 
 // helper: turn any Date/string into "YYYY-MM-DD"
@@ -251,6 +253,7 @@ function renderAnalytics() {
   }
   
   return (
+    <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.screen}>
       {isWide ? (
         // =========================
@@ -332,7 +335,7 @@ function renderAnalytics() {
             contentContainerStyle={styles.mobileScrollContent}
             showsVerticalScrollIndicator={false}
           >
-            <Text style={styles.pageTitle}>Today</Text>
+            <Text style={styles.pageTitle}>{dateLabel}</Text>
   
             {/* NEW: Progress button on mobile */}
             <Pressable
@@ -394,5 +397,6 @@ function renderAnalytics() {
         </View>
       )}
     </View>
+    </SafeAreaView>
   );
 }

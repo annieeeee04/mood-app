@@ -1,12 +1,4 @@
 // backend/index.js
-export * from "./tokens";
-export * from "./base";
-
-export * from "./moodSelector.styles";
-export * from "./supportChatCard.styles";
-export * from "./taskList.styles";
-export * from "./journalInput.styles";
-
 require("dotenv").config();
 
 const express = require("express");
@@ -66,13 +58,15 @@ app.use(
 
 // --- MySQL pool (use env vars) ---
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "mood_journal",
-  waitForConnections: true,
-  connectionLimit: 10,
-  timezone: "Z",
+    host: process.env.MYSQLHOST,
+    port: Number(process.env.MYSQLPORT),
+    user: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    waitForConnections: true,
+    connectionLimit: 10,
+    timezone: "Z",
+    ssl: { rejectUnauthorized: false }, // Railway commonly needs this
 });
 
 // quick health check
