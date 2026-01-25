@@ -17,7 +17,6 @@ import MoodSelector from "../components/MoodSelector.native";
 import TaskList from "../components/TaskList.native";
 import JournalInput from "../components/JournalInput.native";
 import { useAppSettings } from "../context/AppSettingsContext";
-
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { API_BASE } from "../config/api";
@@ -26,6 +25,14 @@ import { API_BASE } from "../config/api";
 function getDateKey(value) {
   const d = new Date(value);
   return d.toISOString().slice(0, 10);
+}
+
+// ✅ helper: nicer axios error logging
+function logAxiosError(label, err) {
+  const status = err?.response?.status;
+  const data = err?.response?.data;
+  const msg = err?.message;
+  console.error(label, { status, data, msg });
 }
 
 export default function TodayPage({ navigation }) {
@@ -49,7 +56,7 @@ export default function TodayPage({ navigation }) {
         }))
       );
     } catch (err) {
-      console.error("Failed to load tasks", err);
+      logAxiosError("Failed to load tasks", err);
     }
   }
 
@@ -73,17 +80,19 @@ export default function TodayPage({ navigation }) {
       });
 
       const t = res.data;
+
+      // ✅ put newest task at TOP (since backend returns DESC)
       setTasks((prev) => [
-        ...prev,
         {
           id: t.id,
           text: t.text,
           done: !!t.done,
           createdAt: t.created_at,
         },
+        ...prev,
       ]);
     } catch (err) {
-      console.error("Failed to add task", err);
+      logAxiosError("Failed to add task", err);
     }
   }
 
@@ -101,17 +110,25 @@ export default function TodayPage({ navigation }) {
     try {
       await axios.patch(`${API_BASE}/api/tasks/${id}`, { done: newDone });
     } catch (err) {
-      console.error("Failed to update task", err);
+      logAxiosError("Failed to update task", err);
+      // optional: revert if failed
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? { ...t, done: !newDone } : t))
+      );
     }
   }
 
   async function deleteTask(id) {
     // optimistic UI
+    const prevTasks = tasks;
     setTasks((prev) => prev.filter((t) => t.id !== id));
+
     try {
       await axios.delete(`${API_BASE}/api/tasks/${id}`);
     } catch (err) {
-      console.error("Failed to delete task", err);
+      logAxiosError("Failed to delete task", err);
+      // revert if failed
+      setTasks(prevTasks);
     }
   }
 
@@ -122,7 +139,7 @@ export default function TodayPage({ navigation }) {
       await axios.post(`${API_BASE}/api/journal`, { dateKey, mood, note });
       Alert.alert("Saved", "Day saved!");
     } catch (err) {
-      console.error("Failed to save journal", err);
+      logAxiosError("Failed to save journal", err);
       Alert.alert("Error", "Couldn't save your day. Please try again.");
     }
   }
@@ -132,7 +149,7 @@ export default function TodayPage({ navigation }) {
     weekday: "long",
     month: "long",
     day: "numeric",
-    });
+  });
   const todayKey = getDateKey(today);
 
   const weeklySummary = useMemo(() => {
@@ -163,10 +180,7 @@ export default function TodayPage({ navigation }) {
     (t) => t.done && getDateKey(t.createdAt || today) === todayKey
   ).length;
 
-  const totalCompletedWeek = weeklySummary.reduce(
-    (sum, d) => sum + d.completed,
-    0
-  );
+  const totalCompletedWeek = weeklySummary.reduce((sum, d) => sum + d.completed, 0);
 
   const safeGoal = dailyGoal > 0 ? dailyGoal : 1;
   const completionRateToday = Math.min(
@@ -177,15 +191,14 @@ export default function TodayPage({ navigation }) {
   const weeklyGoal = safeGoal * 7;
   const maxForBars = safeGoal;
 
-  // helper
-function renderAnalytics() {
+  function renderAnalytics() {
     return (
       <>
         {/* Today summary */}
         <View style={styles.card}>
           <View style={styles.cardHeaderRow}>
             <Text style={styles.cardTitle}>Today summary</Text>
-  
+
             <View style={styles.goalEdit}>
               <Text style={styles.goalLabel}>Daily goal</Text>
               <TextInput
@@ -199,33 +212,29 @@ function renderAnalytics() {
               />
             </View>
           </View>
-  
+
           <Text style={styles.bigNumber}>{completedToday}</Text>
           <Text style={styles.cardLabel}>tasks completed of {safeGoal} today</Text>
-  
+
           <View style={styles.progressBg}>
-            <View
-              style={[styles.progressFill, { width: `${completionRateToday}%` }]}
-            />
+            <View style={[styles.progressFill, { width: `${completionRateToday}%` }]} />
           </View>
-  
-          <Text style={styles.smallText}>
-            Completion rate: {completionRateToday}%
-          </Text>
+
+          <Text style={styles.smallText}>Completion rate: {completionRateToday}%</Text>
         </View>
-  
+
         {/* Weekly bar chart */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Weekly bar chart</Text>
           <Text style={styles.smallText}>
-            Total completed this week:{" "}
-            <Text style={styles.bold}>{totalCompletedWeek}</Text> / {weeklyGoal}
+            Total completed this week: <Text style={styles.bold}>{totalCompletedWeek}</Text>{" "}
+            / {weeklyGoal}
           </Text>
-  
+
           <View style={styles.weeklyChart}>
             {weeklySummary.map((day) => {
               const heightPct = Math.min(100, (day.completed / maxForBars) * 100);
-  
+
               return (
                 <View style={styles.chartCol} key={day.dateKey}>
                   <View style={styles.chartBar}>
@@ -236,7 +245,7 @@ function renderAnalytics() {
                       ]}
                     />
                   </View>
-  
+
                   <Text style={styles.chartLabel}>
                     {day.label === "Today" ? "T" : day.label[0]}
                   </Text>
@@ -246,101 +255,94 @@ function renderAnalytics() {
             })}
           </View>
         </View>
-  
+
         <SupportChatCard />
       </>
     );
   }
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.screen}>
-      {isWide ? (
-        // =========================
-        // WIDE: two columns
-        // =========================
-        <View style={[styles.layout, { flexDirection: "row" }]}>
-          {/* LEFT */}
-          <ScrollView style={styles.main} contentContainerStyle={styles.mainContent}>
-          <Text style={styles.pageTitle}>{dateLabel}</Text>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>How do you feel?</Text>
-              <MoodSelector mood={mood} setMood={setMood} />
-            </View>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Tasks</Text>
-              <TaskList
-                tasks={tasks}
-                addTask={addTask}
-                toggleTask={toggleTask}
-                deleteTask={deleteTask}
-              />
-            </View>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Journal</Text>
-              <JournalInput note={note} setNote={setNote} />
-            </View>
-  
-            <Pressable
-              onPress={saveToday}
-              style={({ pressed }) => [
-                styles.saveButton,
-                pressed && styles.saveButtonPressed,
-              ]}
-              accessibilityRole="button"
-            >
-              <Text style={styles.saveButtonText}>Save Today</Text>
-            </Pressable>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Weekly report</Text>
-              <Text style={styles.weeklySubtitle}>
-                Completed tasks in the last 7 days.
-              </Text>
-  
-              {weeklySummary.map((day) => (
-                <View style={styles.weeklyRow} key={day.dateKey}>
-                  <Text style={styles.weeklyDayLabel}>{day.label}</Text>
-  
-                  <View style={styles.weeklyBarBg}>
-                    <View
-                      style={[styles.weeklyBarFill, { width: `${day.intensity}%` }]}
-                    />
+      <View style={styles.screen}>
+        {isWide ? (
+          <View style={[styles.layout, { flexDirection: "row" }]}>
+            {/* LEFT */}
+            <ScrollView style={styles.main} contentContainerStyle={styles.mainContent}>
+              <Text style={styles.pageTitle}>{dateLabel}</Text>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>How do you feel?</Text>
+                <MoodSelector mood={mood} setMood={setMood} />
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Tasks</Text>
+                <TaskList
+                  tasks={tasks}
+                  addTask={addTask}
+                  toggleTask={toggleTask}
+                  deleteTask={deleteTask}
+                />
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Journal</Text>
+                <JournalInput note={note} setNote={setNote} />
+              </View>
+
+              <Pressable
+                onPress={saveToday}
+                style={({ pressed }) => [
+                  styles.saveButton,
+                  pressed && styles.saveButtonPressed,
+                ]}
+                accessibilityRole="button"
+              >
+                <Text style={styles.saveButtonText}>Save Today</Text>
+              </Pressable>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Weekly report</Text>
+                <Text style={styles.weeklySubtitle}>
+                  Completed tasks in the last 7 days.
+                </Text>
+
+                {weeklySummary.map((day) => (
+                  <View style={styles.weeklyRow} key={day.dateKey}>
+                    <Text style={styles.weeklyDayLabel}>{day.label}</Text>
+
+                    <View style={styles.weeklyBarBg}>
+                      <View
+                        style={[
+                          styles.weeklyBarFill,
+                          { width: `${day.intensity}%` },
+                        ]}
+                      />
+                    </View>
+
+                    <Text style={styles.weeklyCount}>
+                      {day.completed} <Text style={styles.weeklyCountUnit}>done</Text>
+                    </Text>
                   </View>
-  
-                  <Text style={styles.weeklyCount}>
-                    {day.completed}{" "}
-                    <Text style={styles.weeklyCountUnit}>done</Text>
-                  </Text>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-  
-          {/* RIGHT */}
-          <View style={[styles.sidebar, { width: 320 }]}>
-            {renderAnalytics()}
+                ))}
+              </View>
+            </ScrollView>
+
+            {/* RIGHT */}
+            <View style={[styles.sidebar, { width: 320 }]}>{renderAnalytics()}</View>
           </View>
-        </View>
-      ) : (
-        // =========================
-        // MOBILE: clean UI (inputs only + button to Progress page)
-        // =========================
-        <View style={styles.mobileSplit}>
-          <ScrollView
-            style={styles.mobileScroll}
-            contentContainerStyle={styles.mobileScrollContent}
-            showsVerticalScrollIndicator={false}
-          >
-            <Text style={styles.pageTitle}>{dateLabel}</Text>
-  
-            {/* NEW: Progress button on mobile */}
-            <Pressable
-              onPress={() =>
-                router.push({
+        ) : (
+          <View style={styles.mobileSplit}>
+            <ScrollView
+              style={styles.mobileScroll}
+              contentContainerStyle={styles.mobileScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.pageTitle}>{dateLabel}</Text>
+
+              <Pressable
+                onPress={() =>
+                  router.push({
                     pathname: "/progress",
                     params: {
                       dailyGoal,
@@ -351,52 +353,52 @@ function renderAnalytics() {
                       totalCompletedWeek,
                       weeklyGoal,
                       maxForBars,
-                    }
-                })
-              }
-              style={({ pressed }) => [
-                styles.secondaryButton,
-                pressed && styles.saveButtonPressed,
-              ]}
-              accessibilityRole="button"
-            >
-              <Text style={styles.secondaryButtonText}>View progress</Text>
-            </Pressable>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>How do you feel?</Text>
-              <MoodSelector mood={mood} setMood={setMood} />
-            </View>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Tasks</Text>
-              <TaskList
-                tasks={tasks}
-                addTask={addTask}
-                toggleTask={toggleTask}
-                deleteTask={deleteTask}
-              />
-            </View>
-  
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Journal</Text>
-              <JournalInput note={note} setNote={setNote} />
-            </View>
-  
-            <Pressable
-              onPress={saveToday}
-              style={({ pressed }) => [
-                styles.saveButton,
-                pressed && styles.saveButtonPressed,
-              ]}
-              accessibilityRole="button"
-            >
-              <Text style={styles.saveButtonText}>Save Today</Text>
-            </Pressable>
-          </ScrollView>
-        </View>
-      )}
-    </View>
+                    },
+                  })
+                }
+                style={({ pressed }) => [
+                  styles.secondaryButton,
+                  pressed && styles.saveButtonPressed,
+                ]}
+                accessibilityRole="button"
+              >
+                <Text style={styles.secondaryButtonText}>View progress</Text>
+              </Pressable>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>How do you feel?</Text>
+                <MoodSelector mood={mood} setMood={setMood} />
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Tasks</Text>
+                <TaskList
+                  tasks={tasks}
+                  addTask={addTask}
+                  toggleTask={toggleTask}
+                  deleteTask={deleteTask}
+                />
+              </View>
+
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Journal</Text>
+                <JournalInput note={note} setNote={setNote} />
+              </View>
+
+              <Pressable
+                onPress={saveToday}
+                style={({ pressed }) => [
+                  styles.saveButton,
+                  pressed && styles.saveButtonPressed,
+                ]}
+                accessibilityRole="button"
+              >
+                <Text style={styles.saveButtonText}>Save Today</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
