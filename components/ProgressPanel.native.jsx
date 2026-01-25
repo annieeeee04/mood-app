@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TextInput } from "react-native";
 import SupportChatCard from "./SupportChatCard.native";
 import { styles } from "../styles/todayStyles";
+import GlassSurface from "./GlassSurface.native";
 
 export default function ProgressPanel({
   dailyGoal,
@@ -17,7 +18,7 @@ export default function ProgressPanel({
   return (
     <>
       {/* Today summary */}
-      <View style={[styles.card, styles.cardSpacing]}>
+      <GlassSurface style={[styles.card, styles.cardSpacing]}>
         <View style={styles.cardHeaderRow}>
           <Text style={styles.cardTitle}>Today summary</Text>
 
@@ -43,10 +44,10 @@ export default function ProgressPanel({
         </View>
 
         <Text style={styles.smallText}>Completion rate: {completionRateToday}%</Text>
-      </View>
+      </GlassSurface>
 
       {/* Weekly bar chart */}
-      <View style={[styles.card, styles.cardSpacing]}>
+      <GlassSurface style={[styles.card, styles.cardSpacing]}>
         <Text style={styles.cardTitle}>Weekly bar chart</Text>
         <Text style={styles.smallText}>
           Total completed this week: <Text style={styles.bold}>{totalCompletedWeek}</Text> / {weeklyGoal}
@@ -66,7 +67,7 @@ export default function ProgressPanel({
             );
           })}
         </View>
-      </View>
+      </GlassSurface>
 
       {/* Support chat */}
       <SupportChatCard />

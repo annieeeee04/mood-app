@@ -32,25 +32,27 @@ export default function ProgressPage() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+    {/* Background layer */}
     <ScrollView
-      style={styles.screen}
-      contentContainerStyle={{ paddingBottom: 24 }}
-      showsVerticalScrollIndicator={false}
+    style={{ flex: 1 }}
+    contentContainerStyle={{ paddingBottom: 24 }}
+    showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.pageTitle}>Progress</Text>
-
-      <ProgressPanel
-        dailyGoal={dailyGoal}
-        setDailyGoal={setDailyGoal}
-        completedToday={completedToday}
-        safeGoal={safeGoal}
-        completionRateToday={completionRateToday}
-        weeklySummary={weeklySummary}
-        totalCompletedWeek={totalCompletedWeek}
-        weeklyGoal={weeklyGoal}
-        maxForBars={maxForBars}
-      />
+    <Text style={styles.pageTitle}>Progress</Text>
+    
+    
+    <ProgressPanel
+    dailyGoal={dailyGoal}
+    setDailyGoal={setDailyGoal}
+    completedToday={completedToday}
+    safeGoal={safeGoal}
+    completionRateToday={completionRateToday}
+    weeklySummary={weeklySummary}
+    totalCompletedWeek={totalCompletedWeek}
+    weeklyGoal={weeklyGoal}
+    maxForBars={maxForBars}
+    />
     </ScrollView>
     </SafeAreaView>
-  );
+    );
 }

@@ -39,3 +39,18 @@ export const colors = {
     hairline: 1,
     strong: 2,
     };
+
+    export const glass = {
+        blur: {
+        intensity: 35,
+        tint: "light", // "light" | "dark"
+        },
+        card: {
+        borderColor: "rgba(255,255,255,0.25)",
+        backgroundColor: "rgba(255,255,255,0.08)",
+        },
+        input: {
+        borderColor: "rgba(255,255,255,0.18)",
+        backgroundColor: "rgba(255,255,255,0.06)",
+        },
+    };

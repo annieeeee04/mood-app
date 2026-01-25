@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { supportChatCardStyles as styles } from "../styles/supportChatCard.styles";
+import GlassSurface from "./GlassSurface.native";
 
 const API_BASE =
   Platform.OS === "android" ? "http://10.0.2.2:4000" : "http://localhost:4000";
@@ -71,7 +72,7 @@ export default function SupportChatCard() {
   }
 
   return (
-    <View style={styles.card}>
+    <GlassSurface style={styles.card}>
       <View style={styles.headerRow}>
         <Text style={styles.title}>Need to talk?</Text>
 
@@ -92,7 +93,9 @@ export default function SupportChatCard() {
             ref={scrollRef}
             style={styles.window}
             contentContainerStyle={{ paddingBottom: 10 }}
-            onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
+            onContentSizeChange={() =>
+              scrollRef.current?.scrollToEnd({ animated: true })
+            }
           >
             {messages.map((m, idx) => (
               <View
@@ -135,6 +138,6 @@ export default function SupportChatCard() {
           </Text>
         </>
       )}
-    </View>
+    </GlassSurface>
   );
 }

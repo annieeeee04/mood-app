@@ -10,6 +10,10 @@ import {
 } from "react-native";
 import axios from "axios";
 
+import { StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import GlassSurface from "../components/GlassSurface.native";
+
 import { router } from "expo-router";
 import { styles } from "../styles/todayStyles";
 import SupportChatCard from "../components/SupportChatCard.native";
@@ -180,7 +184,10 @@ export default function TodayPage({ navigation }) {
     (t) => t.done && getDateKey(t.createdAt || today) === todayKey
   ).length;
 
-  const totalCompletedWeek = weeklySummary.reduce((sum, d) => sum + d.completed, 0);
+  const totalCompletedWeek = weeklySummary.reduce(
+    (sum, d) => sum + d.completed,
+    0
+  );
 
   const safeGoal = dailyGoal > 0 ? dailyGoal : 1;
   const completionRateToday = Math.min(
@@ -195,7 +202,7 @@ export default function TodayPage({ navigation }) {
     return (
       <>
         {/* Today summary */}
-        <View style={styles.card}>
+        <GlassSurface style={[styles.cardGlass, styles.cardSpacing]}>
           <View style={styles.cardHeaderRow}>
             <Text style={styles.cardTitle}>Today summary</Text>
 
@@ -208,32 +215,44 @@ export default function TodayPage({ navigation }) {
                   setDailyGoal(Number.isNaN(v) ? 1 : Math.max(1, v));
                 }}
                 keyboardType="number-pad"
-                style={styles.goalInput}
+                style={styles.goalInputGlass ?? styles.goalInput}
               />
             </View>
           </View>
 
           <Text style={styles.bigNumber}>{completedToday}</Text>
-          <Text style={styles.cardLabel}>tasks completed of {safeGoal} today</Text>
+          <Text style={styles.cardLabel}>
+            tasks completed of {safeGoal} today
+          </Text>
 
           <View style={styles.progressBg}>
-            <View style={[styles.progressFill, { width: `${completionRateToday}%` }]} />
+            <View
+              style={[
+                styles.progressFill,
+                { width: `${completionRateToday}%` },
+              ]}
+            />
           </View>
 
-          <Text style={styles.smallText}>Completion rate: {completionRateToday}%</Text>
-        </View>
+          <Text style={styles.smallText}>
+            Completion rate: {completionRateToday}%
+          </Text>
+        </GlassSurface>
 
         {/* Weekly bar chart */}
-        <View style={styles.card}>
+        <GlassSurface style={[styles.cardGlass, styles.cardSpacing]}>
           <Text style={styles.cardTitle}>Weekly bar chart</Text>
           <Text style={styles.smallText}>
-            Total completed this week: <Text style={styles.bold}>{totalCompletedWeek}</Text>{" "}
-            / {weeklyGoal}
+            Total completed this week:{" "}
+            <Text style={styles.bold}>{totalCompletedWeek}</Text> / {weeklyGoal}
           </Text>
 
           <View style={styles.weeklyChart}>
             {weeklySummary.map((day) => {
-              const heightPct = Math.min(100, (day.completed / maxForBars) * 100);
+              const heightPct = Math.min(
+                100,
+                (day.completed / maxForBars) * 100
+              );
 
               return (
                 <View style={styles.chartCol} key={day.dateKey}>
@@ -254,8 +273,9 @@ export default function TodayPage({ navigation }) {
               );
             })}
           </View>
-        </View>
+        </GlassSurface>
 
+        {/* Support chat (make this glass too if you want) */}
         <SupportChatCard />
       </>
     );
@@ -263,11 +283,18 @@ export default function TodayPage({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.screen}>
+      <LinearGradient
+        colors={["#EEF2FF", "#F8FAFC", "#ECFEFF"]}
+        style={StyleSheet.absoluteFill}
+      />
+      <View style={[styles.screen, { backgroundColor: "transparent" }]}>
         {isWide ? (
           <View style={[styles.layout, { flexDirection: "row" }]}>
             {/* LEFT */}
-            <ScrollView style={styles.main} contentContainerStyle={styles.mainContent}>
+            <ScrollView
+              style={styles.main}
+              contentContainerStyle={styles.mainContent}
+            >
               <Text style={styles.pageTitle}>{dateLabel}</Text>
 
               <View style={styles.section}>
@@ -321,7 +348,8 @@ export default function TodayPage({ navigation }) {
                     </View>
 
                     <Text style={styles.weeklyCount}>
-                      {day.completed} <Text style={styles.weeklyCountUnit}>done</Text>
+                      {day.completed}{" "}
+                      <Text style={styles.weeklyCountUnit}>done</Text>
                     </Text>
                   </View>
                 ))}
@@ -329,7 +357,9 @@ export default function TodayPage({ navigation }) {
             </ScrollView>
 
             {/* RIGHT */}
-            <View style={[styles.sidebar, { width: 320 }]}>{renderAnalytics()}</View>
+            <View style={[styles.sidebar, { width: 320 }]}>
+              {renderAnalytics()}
+            </View>
           </View>
         ) : (
           <View style={styles.mobileSplit}>

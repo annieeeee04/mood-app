@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
 import { journalInputStyles as styles } from "../styles/journalInput.styles.js";
+import GlassSurface from "./GlassSurface.native";
 
 const MAX_CHARS = 1000;
 
@@ -34,7 +35,7 @@ export default function JournalInput({ note, setNote }) {
   );
 
   return (
-    <View style={styles.card}>
+    <GlassSurface style={styles.card}>
       <View style={styles.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>Today’s reflection</Text>
@@ -75,6 +76,6 @@ export default function JournalInput({ note, setNote }) {
       <Text style={styles.footer}>
         Be kind to yourself. This journal is for you, not for perfection.
       </Text>
-    </View>
+    </GlassSurface>
   );
 }

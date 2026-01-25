@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Switch,
-} from "react-native";
-
+import { View, Text, TextInput, Pressable, Switch } from "react-native";
 import { taskListStyles as styles } from "../styles/taskList.styles.js";
+import GlassSurface from "./GlassSurface.native";
 
 export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
   const [input, setInput] = useState("");
@@ -20,7 +14,7 @@ export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
   }
 
   return (
-    <View style={styles.wrapper}>
+    <GlassSurface style={styles.wrapper}>
       <View style={styles.inputRow}>
         <TextInput
           value={input}
@@ -43,10 +37,7 @@ export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
         {tasks.map((task) => (
           <View key={task.id} style={styles.item}>
             <View style={styles.itemLeft}>
-              <Switch
-                value={task.done}
-                onValueChange={() => toggleTask(task.id)}
-              />
+              <Switch value={task.done} onValueChange={() => toggleTask(task.id)} />
               <Text style={[styles.taskText, task.done && styles.taskDone]}>
                 {task.text}
               </Text>
@@ -65,6 +56,6 @@ export default function TaskList({ tasks, addTask, toggleTask, deleteTask }) {
           <Text style={styles.empty}>No tasks yet. Add your first one ✨</Text>
         )}
       </View>
-    </View>
+    </GlassSurface>
   );
 }

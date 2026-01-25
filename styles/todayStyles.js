@@ -5,25 +5,17 @@ export const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: spacing.xl,
-    backgroundColor: colors.surfaceBg, // optional but makes cards look nicer
+    backgroundColor: "#0F172A",
   },
 
-  // used for wide mode container
-  layout: {
-    flex: 1,
-  },
+  layout: { flex: 1 },
 
-  // ===== Mobile 50/50 split =====
   mobileSplit: { flex: 1 },
   mobileTop: { flex: 1 },
-  mobileBottom: {
-    flex: 1,
-    marginTop: spacing.lg,
-  },
+  mobileBottom: { flex: 1, marginTop: spacing.lg },
   mobileScroll: { flex: 1 },
   mobileScrollContent: { paddingBottom: spacing.lg },
 
-  // ===== Left/main content =====
   main: { flex: 1 },
   mainContent: { paddingBottom: spacing.xxl },
 
@@ -56,7 +48,6 @@ export const styles = StyleSheet.create({
   saveButtonPressed: { opacity: 0.7 },
   saveButtonText: { fontWeight: "600", color: colors.text },
 
-  // ===== Weekly report list (left) =====
   weeklySubtitle: { marginBottom: spacing.md, color: colors.muted },
 
   weeklyRow: {
@@ -64,12 +55,11 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: spacing.sm,
   },
-  // replace weeklyRow gap with margin
   weeklyDayLabel: { width: 60, fontWeight: "600", color: colors.text },
   weeklyBarBg: {
     flex: 1,
     height: 10,
-    marginHorizontal: spacing.md, // replaces gap:10
+    marginHorizontal: spacing.md,
     borderRadius: radius.pill,
     borderWidth: borders.hairline,
     borderColor: colors.border,
@@ -80,17 +70,24 @@ export const styles = StyleSheet.create({
   weeklyCount: { width: 70, textAlign: "right", color: colors.text },
   weeklyCountUnit: { opacity: 0.7, color: colors.muted },
 
-  // ===== Sidebar / analytics =====
-  sidebar: {
-    // if gap doesn't work for you, remove it and use cardSpacing below
-  },
-  cardSpacing: { marginBottom: spacing.xl }, // use this instead of gap
+  sidebar: {},
+  cardSpacing: { marginBottom: spacing.xl },
 
+  // existing solid card
   card: {
     borderWidth: borders.hairline,
     borderColor: colors.border,
     borderRadius: radius.lg,
     backgroundColor: colors.cardBg,
+    padding: spacing.lg,
+  },
+
+  // NEW: glass card (use with GlassSurface wrapper)
+  cardGlass: {
+    borderWidth: borders.hairline,
+    borderColor: "rgba(255,255,255,0.22)",
+    borderRadius: radius.lg,
+    backgroundColor: "rgba(255,255,255,0.04)",
     padding: spacing.lg,
   },
 
@@ -103,6 +100,7 @@ export const styles = StyleSheet.create({
 
   goalEdit: { alignItems: "flex-end" },
   goalLabel: { fontSize: 12, color: colors.muted, marginBottom: spacing.xs },
+
   goalInput: {
     width: 70,
     borderWidth: borders.hairline,
@@ -113,6 +111,19 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.text,
     backgroundColor: colors.cardBg,
+  },
+
+  // NEW optional glass goal input
+  goalInputGlass: {
+    width: 70,
+    borderWidth: borders.hairline,
+    borderColor: "rgba(255,255,255,0.18)",
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    textAlign: "center",
+    color: colors.text,
+    backgroundColor: "rgba(255,255,255,0.05)",
   },
 
   bigNumber: {
@@ -137,21 +148,9 @@ export const styles = StyleSheet.create({
   smallText: { marginTop: spacing.md, color: colors.muted },
   bold: { fontWeight: "700", color: colors.text },
 
-  // Bottom Half
-  mobileBottom: {
-    flex: 1,
-    marginTop: 14,
-  },
-  
-  mobileBottomScroll: {
-    flex: 1,
-  },
-  
-  mobileBottomScrollContent: {
-    paddingBottom: 16,
-  },
+  mobileBottomScroll: { flex: 1 },
+  mobileBottomScrollContent: { paddingBottom: 16 },
 
-  // Secondary-button
   secondaryButton: {
     marginTop: 8,
     marginBottom: 4,
@@ -161,11 +160,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  secondaryButtonText: {
-    fontWeight: "700",
-  },
+  secondaryButtonText: { fontWeight: "700" },
 
-  // ===== Weekly chart (right) =====
   weeklyChart: {
     marginTop: spacing.md,
     flexDirection: "row",
