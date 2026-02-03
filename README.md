@@ -1,50 +1,92 @@
-# Welcome to your Expo app 👋
+# 🌤️ Mood App — A Personal Mood Journal & Reflection Companion  
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile app that helps users track their mood, reflect on their emotions, and stay organized with built-in journaling and to-do features.
 
-## Get started
+---
 
-1. Install dependencies
+## 📌 Overview  
 
-   ```bash
-   npm install
-   ```
+Mood App is a lightweight and intuitive mobile application designed to support emotional awareness and daily self-reflection. The app allows users to:  
 
-2. Start the app
+- Log their mood using an interactive emoji-based scale  
+- Write short journal reflections about their day  
+- Create and manage a personal to-do list  
+- View past mood records and reflections over time  
+- Store data securely in a backend database  
 
-   ```bash
-   npx expo start
-   ```
+The project follows a full-stack architecture with a **React Native (Expo) frontend** and an **Express + MySQL backend**, emphasizing clean UI design, usability, and reliable data persistence.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## ✨ Features  
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 😊 Mood Tracking  
+Select your mood from a simple, visual scale and add optional notes to capture your feelings in context.
 
-## Get a fresh project
+![Mood selection screen](assets/mood-selection.png)
 
-When you're ready, run:
+### 📝 Journal  
+Write and save short reflections about your day. Entries are timestamped and stored securely.
+
+![Journal screen](assets/journal-screen.png)
+
+### ✅ To-Do List  
+Create, complete, and delete tasks to help you stay organized alongside your emotional check-ins.
+
+![To-do list screen](assets/todo-screen.png)
+
+### 📊 Web Page
+![Webpage screen](assets/webpage.png)
+
+---
+
+## 🛠️ Tech Stack  
+
+### Frontend  
+- React Native (Expo)  
+- React Navigation  
+- AsyncStorage (local caching)  
+
+### Backend  
+- Node.js + Express  
+- MySQL  
+- RESTful API architecture  
+
+---
+
+## 🚀 Getting Started  
+
+### 1. Install dependencies  
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Start the app  
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+You can open the app using:  
+- Expo Go (recommended for quick testing)  
+- iOS Simulator  
+- Android Emulator  
+- Development build  
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## 🔮 Future Improvements  
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Calendar view for mood tracking  
+- Data visualization (charts of mood trends)  
+- Cloud sync & user authentication  
+- Push notifications for daily check-ins  
+
+---
+
+## 👩‍💻 Author  
+
+Zhichen (Annie) Zhang  
+UBC Statistics 
