@@ -23,20 +23,20 @@ The project follows a full-stack architecture with a **React Native (Expo) front
 ### 😊 Mood Tracking  
 Select your mood from a simple, visual scale and add optional notes to capture your feelings in context.
 
-![Mood selection screen](assets/mood-selection.png)
+![Mood selection screen](assets/images/mood-selection.png)
 
 ### 📝 Journal  
 Write and save short reflections about your day. Entries are timestamped and stored securely.
 
-![Journal screen](assets/journal-screen.png)
+![Journal screen](assets/images/journal-screen.png)
 
 ### ✅ To-Do List  
 Create, complete, and delete tasks to help you stay organized alongside your emotional check-ins.
 
-![To-do list screen](assets/todo-screen.png)
+![To-do list screen](assets/images/todo-screen.png)
 
 ### 📊 Web Page
-![Webpage screen](assets/webpage.png)
+![Webpage screen](assets/images/webpage.png)
 
 ---
 
