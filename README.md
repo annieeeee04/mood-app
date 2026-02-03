@@ -23,7 +23,7 @@ The project follows a full-stack architecture with a **React Native (Expo) front
 ### 😊 Mood Tracking  
 Select your mood from a simple, visual scale and add optional notes to capture your feelings in context.
 
-![Mood selection screen](assets/images/mood-selection.png)
+![Mood selection screen]<img src="assets/images/mood-selection.png" width="300" />
 
 ### 📝 Journal  
 Write and save short reflections about your day. Entries are timestamped and stored securely.
